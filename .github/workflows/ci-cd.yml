@@ -48,7 +48,8 @@ jobs:
   test:
     needs: build
     runs-on: ubuntu-latest
-    steps: []
+    steps:
+      - run: echo "Pendiente"
 
   package:
     needs: test
@@ -56,17 +57,20 @@ jobs:
     permissions:
       contents: read
       packages: write
-    steps: []
+    steps:
+      - run: echo "Pendiente"
 
   security:
     needs: package
     runs-on: ubuntu-latest
-    steps: []
+    steps:
+      - run: echo "Pendiente"
 
   smoke:
     needs: security
     runs-on: ubuntu-latest
-    steps: []
+    steps:
+      - run: echo "Pendiente"
 
   deploy-prod:
     needs: smoke
@@ -78,4 +82,5 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    steps: []
+    steps:
+      - run: echo "Pendiente"
