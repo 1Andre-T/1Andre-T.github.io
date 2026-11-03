@@ -1,0 +1,55 @@
+services:
+  db:
+    build: ./db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: libro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d libro"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./api
+    networks:
+      - frontend
+      - backend
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: libro
+      DB_USER: app
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - frontend
+    depends_on:
+      api:
+        condition: service_healthy
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  pgdata:
