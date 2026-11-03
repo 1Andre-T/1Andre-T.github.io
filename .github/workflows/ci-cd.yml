@@ -1,0 +1,81 @@
+name: CI/CD
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Linters (HTMLHint y ESLint)
+        run: npm install -g htmlhint eslint
+
+      - name: Linter 1 - HTMLHint
+        run: htmlhint index.html
+
+      - name: Linter 2 - ESLint (API)
+        # Se requiere un archivo de configuración (ej. eslint.config.js) en la raíz
+        run: eslint api/app.js
+
+      - name: Linter 3 - Hadolint (Dockerfiles)
+        run: |
+          docker run --rm -i hadolint/hadolint < api/Dockerfile
+          docker run --rm -i hadolint/hadolint < web/Dockerfile
+          docker run --rm -i hadolint/hadolint < db/Dockerfile
+
+      - name: Armar carpeta del sitio (_site)
+        run: |
+          mkdir _site
+          cp index.html estilos.css libro-de-visitas.js _site/
+
+      - name: Subir artefacto a GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site/
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps: []
+
+  package:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps: []
+
+  security:
+    needs: package
+    runs-on: ubuntu-latest
+    steps: []
+
+  smoke:
+    needs: security
+    runs-on: ubuntu-latest
+    steps: []
+
+  deploy-prod:
+    needs: smoke
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps: []
