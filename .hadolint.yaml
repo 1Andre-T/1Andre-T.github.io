@@ -1,0 +1,4 @@
+# Ignoramos DL3066 porque los usuarios 'node' y 'nginx' ya vienen preconfigurados
+# en las imágenes base oficiales y su ID no afecta nuestro entorno.
+ignored:
+  - DL3066
