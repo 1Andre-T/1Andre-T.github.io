@@ -32,8 +32,8 @@ jobs:
       - name: Linter 3 - Hadolint (Dockerfiles)
         uses: hadolint/hadolint-action@v3.1.0
         with:
-        dockerfile: "api/Dockerfile"
-        config: ".hadolint.yaml"
+          dockerfile: "api/Dockerfile"
+          config: ".hadolint.yaml"
 
       - name: Armar carpeta del sitio (_site)
         run: |
