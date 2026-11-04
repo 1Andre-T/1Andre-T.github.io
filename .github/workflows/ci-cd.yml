@@ -30,10 +30,10 @@ jobs:
         run: eslint api/app.js
 
       - name: Linter 3 - Hadolint (Dockerfiles)
-        run: |
-          docker run --rm -i hadolint/hadolint < api/Dockerfile
-          docker run --rm -i hadolint/hadolint < web/Dockerfile
-          docker run --rm -i hadolint/hadolint < db/Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+        dockerfile: "api/Dockerfile"
+        config: ".hadolint.yaml"
 
       - name: Armar carpeta del sitio (_site)
         run: |
