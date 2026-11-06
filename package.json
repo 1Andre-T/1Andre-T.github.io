@@ -1,0 +1,25 @@
+{
+  "name": "1andre-t.github.io",
+  "version": "1.0.0",
+  "description": "Decisión: Usé multi-stage build en el Dockerfile de la API (Node.js). - Alternativas evaluadas: Usar la imagen de node base completa vs node-alpine con multi-stage. - Por qué elegí esta: Reduce drásticamente el peso final al no incluir dependencias de desarrollo (`npm install --omit=dev`) en la imagen de producción. - Cómo lo verifiqué: Revisando el peso reducido con `docker images`.",
+  "main": "eslint.config.js",
+  "scripts": {
+    "test": "vitest run tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1Andre-T/1Andre-T.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/1Andre-T/1Andre-T.github.io/issues"
+  },
+  "homepage": "https://github.com/1Andre-T/1Andre-T.github.io#readme",
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "vitest": "^5.1.0"
+  }
+}

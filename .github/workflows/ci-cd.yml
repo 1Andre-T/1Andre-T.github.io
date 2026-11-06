@@ -49,7 +49,24 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Pendiente"
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Armar carpeta del sitio (_site)
+        run: |
+          mkdir _site
+          cp index.html estilos.css libro-de-visitas.js _site/
+
+      - name: Correr pruebas de Vitest
+        run: npm test
 
   package:
     needs: test
