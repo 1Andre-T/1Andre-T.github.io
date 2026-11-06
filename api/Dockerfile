@@ -8,7 +8,7 @@ RUN npm install --omit=dev
 COPY app.js ./
 
 # Etapa 2: Producción
-FROM node:20-alpine
+FROM node:22-alpine
 
 # Actualizar npm para parchear vulnerabilidades (ej. CVE en tar)
 RUN npm install -g npm@latest
