@@ -120,7 +120,23 @@ jobs:
     needs: package
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Pendiente"
+      - name: Escanear imagen perfil-api con Trivy
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: ghcr.io/${{ github.repository_owner }}/perfil-api:sha-${{ github.sha }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
+
+      - name: Escanear imagen perfil-web con Trivy
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          image-ref: ghcr.io/${{ github.repository_owner }}/perfil-web:sha-${{ github.sha }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL'
 
   smoke:
     needs: security
