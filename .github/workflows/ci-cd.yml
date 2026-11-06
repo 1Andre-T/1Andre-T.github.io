@@ -120,10 +120,14 @@ jobs:
     needs: package
     runs-on: ubuntu-latest
     steps:
+      - name: Convertir owner a minúsculas
+        id: repo-owner
+        run: echo "owner=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
       - name: Escanear imagen perfil-api con Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/perfil-api:sha-${{ github.sha }}
+          image-ref: ghcr.io/${{ steps.repo-owner.outputs.owner }}/perfil-api:sha-${{ github.sha }}
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -132,7 +136,7 @@ jobs:
       - name: Escanear imagen perfil-web con Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/perfil-web:sha-${{ github.sha }}
+          image-ref: ghcr.io/${{ steps.repo-owner.outputs.owner }}/perfil-web:sha-${{ github.sha }}
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
