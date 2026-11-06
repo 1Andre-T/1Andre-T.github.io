@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Escanear imagen perfil-api con Trivy
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/perfil-api:sha-${{ github.sha }}
           format: 'table'
@@ -130,7 +130,7 @@ jobs:
           severity: 'CRITICAL'
 
       - name: Escanear imagen perfil-web con Trivy
-        uses: aquasecurity/trivy-action@0.24.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/perfil-web:sha-${{ github.sha }}
           format: 'table'
